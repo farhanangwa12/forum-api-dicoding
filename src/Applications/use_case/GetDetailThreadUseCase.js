@@ -15,7 +15,7 @@ class GetDetailThreadUseCase {
       allComments.map(async (comments) => {
         const replies = await this._threadCommentRepository.getAllReplyByCommentId(comments.id);
         // Map replies untuk mengubah content berdasarkan is_delete
-        const filteredReplies = replies.map(reply => ({
+        const filteredReplies = replies.map((reply) => ({
           id: reply.id,
           username: reply.username,
           date: reply.date,

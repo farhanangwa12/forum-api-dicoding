@@ -100,7 +100,7 @@ describe('DeleteCommentThreadUseCase', () => {
     const useCasePayload = {
       threadId: 'thread-123',
       commentId: 'comment-123',
-      userId: 'user-456', 
+      userId: 'user-456',
     };
     // Mock repositories
     const mockThreadRepository = new ThreadRepository();
@@ -134,14 +134,14 @@ describe('DeleteCommentThreadUseCase', () => {
     expect(mockThreadCommentRepository.deleteCommentThread).not.toHaveBeenCalled();
   });
 
-   it('should throw NotFoundError when user is already deleted the comment', async () => {
+  it('should throw NotFoundError when user is already deleted the comment', async () => {
     // Arrange
 
     // The real owner is user-123 not user-456
     const useCasePayload = {
       threadId: 'thread-123',
       commentId: 'comment-123',
-      userId: 'user-123', 
+      userId: 'user-123',
     };
     // Mock repositories
     const mockThreadRepository = new ThreadRepository();

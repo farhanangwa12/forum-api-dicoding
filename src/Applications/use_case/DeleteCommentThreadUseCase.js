@@ -9,7 +9,7 @@ class DeleteCommentThreadUseCase {
     await this._threadRepository.checkThread(useCasePayload.threadId);
     const commentThread = await this._threadCommentRepository.checkThreadComment(useCasePayload.commentId);
     if (commentThread.owner !== useCasePayload.userId) {
-      throw new Error('DELETE_COMMENT_THREAD.UNAUTHORIZED_USER_ACTION_ON_THREAD_COMMENT')
+      throw new Error('DELETE_COMMENT_THREAD.UNAUTHORIZED_USER_ACTION_ON_THREAD_COMMENT');
     }
     if (commentThread.is_delete) {
       // throw new NotFoundError('Komentar tidak ada');

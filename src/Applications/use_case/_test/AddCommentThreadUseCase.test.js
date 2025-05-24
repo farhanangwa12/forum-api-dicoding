@@ -27,7 +27,7 @@ describe('AddCommentThreadUseCase', () => {
 
     // Mock dependencies behavior
     mockThreadRepository.checkThread = jest.fn().mockImplementation(() => Promise.resolve({
-      id: 'thread-123' 
+      id: 'thread-123'
     }));
     mockThreadCommentRepository.addCommentThread = jest.fn().mockImplementation(() => Promise.resolve({
       id: 'comment-123',
