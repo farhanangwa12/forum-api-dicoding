@@ -1,5 +1,3 @@
-const AuthorizationError = require('../../Commons/exceptions/AuthorizationError');
-const NotFoundError = require('../../Commons/exceptions/NotFoundError');
 
 class DeleteReplyCommentThreadUseCase {
   constructor({ threadRepository, threadCommentRepository }) {
@@ -15,14 +13,13 @@ class DeleteReplyCommentThreadUseCase {
 
     const commentThread = await this._threadCommentRepository.checkThreadComment(dataReply.reference_comment_id);
 
-
     if (commentThread.owner !== useCasePayload.userId) {
-      throw new AuthorizationError('Anda tidak berhak terhadap resource ini');
-    }
-    if (commentThread.is_delete) {
-      throw new NotFoundError('Komentar tidak ada');
+      throw new Error('DELETE_REPLY_COMMENT_THREAD.UNAUTHORIZED_USER_ACTION_ON_REPLY_COMMENT_THREAD');
     }
 
+    if (commentThread.is_delete) {
+      throw new Error('DELETE_REPLY_COMMENT_THREAD.REFERENCE_COMMENT_NOT_FOUND_OR_ALREADY_DELETED');
+    }
     await this._threadCommentRepository.deleteCommentThread(dataReply.reference_comment_id);
   }
 }

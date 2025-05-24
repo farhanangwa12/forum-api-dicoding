@@ -1,5 +1,6 @@
 const InvariantError = require('./InvariantError');
-
+const AuthorizationError = require('./AuthorizationError');
+const NotFoundError = require('./NotFoundError');
 const DomainErrorTranslator = {
   translate(error) {
     return DomainErrorTranslator._directories[error.message] || error;
@@ -20,7 +21,13 @@ DomainErrorTranslator._directories = {
   'CREATE_THREAD.NOT_CONTAIN_NEEDED_PROPERTY': new InvariantError('tidak dapat membuat thread baru karena properti yang dibutuhkan tidak ada'),
   'CREATE_THREAD.NOT_MEET_DATA_TYPE_SPESIFICATION': new InvariantError('title dan body harus berbentuk string'),
   'CREATE_COMMENT_THREAD.NOT_CONTAIN_NEEDED_PROPERTY': new InvariantError('harus mengirimkan content'),
-  'CREATE_COMMENT_THREAD.NOT_MEET_DATA_TYPE_SPECIFICATION': new InvariantError('content yang dikirim harus berbentuk string')
+  'CREATE_COMMENT_THREAD.NOT_MEET_DATA_TYPE_SPECIFICATION': new InvariantError('content yang dikirim harus berbentuk string'),
+  'DELETE_COMMENT_THREAD.UNAUTHORIZED_USER_ACTION_ON_THREAD_COMMENT': new AuthorizationError('Anda tidak berhak menghapus resource ini'),
+  'DELETE_COMMENT_THREAD.COMMENT_NOT_FOUND': new NotFoundError('Maaf, komentar tidak ada'),
+  'DELETE_REPLY_COMMENT_THREAD.UNAUTHORIZED_USER_ACTION_ON_REPLY_COMMENT_THREAD': new AuthorizationError('Anda tidak berhak menghapus balasan ini'),
+  'DELETE_REPLY_COMMENT_THREAD.REFERENCE_COMMENT_NOT_FOUND_OR_ALREADY_DELETED': new NotFoundError('Maaf, komentar balasan tidak ada'),
+
+
 };
 
 module.exports = DomainErrorTranslator;

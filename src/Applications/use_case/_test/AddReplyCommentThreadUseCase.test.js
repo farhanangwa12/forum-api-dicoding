@@ -13,18 +13,26 @@ describe('AddReplyCommentThreadUseCase', () => {
     const useCasePayload = {
       threadId: 'thread-123',
       commentId: 'comment-123',
-      content: 'this is content',
+      content: 'this is reply for comment',
       owner: 'user-123'
 
     };
     const mockThreadRepository = new ThreadRepository();
     const mockThreadCommentRepository = new ThreadCommentRepository();
 
-    mockThreadRepository.checkThread = jest.fn().mockImplementation(() => Promise.resolve());
-    mockThreadCommentRepository.checkThreadComment = jest.fn().mockImplementation(() => Promise.resolve());
+    mockThreadRepository.checkThread = jest.fn().mockImplementation(() => Promise.resolve({
+      id: 'thread-123'
+    }));
+    mockThreadCommentRepository.checkThreadComment = jest.fn().mockImplementation(() => Promise.resolve({
+      id: 'comment-123',
+      content: 'this is a coment',
+      owner: 'user-123',
+      is_delete: false
+
+    }));
     mockThreadCommentRepository.addCommentThread = jest.fn().mockImplementation(() => Promise.resolve({
       id: 'comment-124',
-      content: 'this is content',
+      content: 'this is reply for comment',
       owner: 'user-123'
 
     }));
@@ -43,9 +51,9 @@ describe('AddReplyCommentThreadUseCase', () => {
 
     // Assert
 
-    expect(result).toEqual({
+    expect(result).toStrictEqual({
       id: 'reply-123', // ID dari replyComment
-      content: 'this is content',
+      content: 'this is reply for comment',
       owner: 'user-123',
     });
     expect(mockThreadRepository.checkThread).toBeCalledWith(useCasePayload.threadId);

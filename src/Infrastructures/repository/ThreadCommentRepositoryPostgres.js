@@ -61,7 +61,7 @@ class ThreadCommentRepositoryPostgres extends ThreadCommentRepository {
     const query = {
       text: `
             SELECT tc.id, u.username AS username, tc.created_at AS date,
-                   CASE WHEN tc.is_delete = true THEN '**komentar telah dihapus**' ELSE tc.content END AS content
+            tc.content, tc.is_delete
             FROM thread_comments tc
             LEFT JOIN users u ON u.id = tc.owner
             LEFT JOIN reply_comments ON reply_comments.reference_comment_id = tc.id
@@ -94,14 +94,14 @@ class ThreadCommentRepositoryPostgres extends ThreadCommentRepository {
 
     const query = {
       text: `
-            SELECT reply_comments.id, users.username AS username, thread_comments.created_at AS date,
-                   CASE WHEN thread_comments.is_delete = true THEN '**balasan telah dihapus**' ELSE thread_comments.content END AS content
-            FROM thread_comments thread_comments
-            LEFT JOIN users  ON users.id = thread_comments.owner
-            LEFT JOIN reply_comments ON reply_comments.reference_comment_id = thread_comments.id
-            WHERE reply_comments.reply_comment_id = $1 
-            ORDER BY thread_comments.created_at ASC
-        `,
+        SELECT reply_comments.id, users.username AS username, thread_comments.created_at AS date,
+               thread_comments.content, thread_comments.is_delete
+        FROM thread_comments
+        LEFT JOIN users ON users.id = thread_comments.owner
+        LEFT JOIN reply_comments ON reply_comments.reference_comment_id = thread_comments.id
+        WHERE reply_comments.reply_comment_id = $1 
+        ORDER BY thread_comments.created_at ASC
+    `,
       values: [commentId],
     };
 

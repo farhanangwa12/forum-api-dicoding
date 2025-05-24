@@ -14,9 +14,19 @@ class GetDetailThreadUseCase {
     const commentWithReply = await Promise.all(
       allComments.map(async (comments) => {
         const replies = await this._threadCommentRepository.getAllReplyByCommentId(comments.id);
-
+        // Map replies untuk mengubah content berdasarkan is_delete
+        const filteredReplies = replies.map(reply => ({
+          id: reply.id,
+          username: reply.username,
+          date: reply.date,
+          content: reply.is_delete ? '**balasan sudah dihapus**' : reply.content,
+        }));
         return {
-          ...comments, replies: replies
+          id: comments.id,
+          username: comments.username,
+          date: comments.date,
+          content: comments.is_delete ? '**komentar telah dihapus**' : comments.content,
+          replies: filteredReplies
         };
       })
     );

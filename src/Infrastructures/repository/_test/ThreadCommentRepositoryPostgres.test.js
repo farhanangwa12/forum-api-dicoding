@@ -152,6 +152,7 @@ describe('ThreadCommentPostgres', () => {
       expect(comments[0]).toEqual({
         id: 'comment-123',
         date: expect.any(Date),
+        is_delete: false,
         username: 'dicoding',
         content: 'this is a test comment',
       });
@@ -159,8 +160,9 @@ describe('ThreadCommentPostgres', () => {
       expect(comments[1]).toEqual({
         id: 'comment-124',
         date: expect.any(Date),
+        is_delete: true,
         username: 'dicoding',
-        content: '**komentar telah dihapus**',
+        content: 'this is a deleted comment',
       });
     });
 
@@ -269,13 +271,15 @@ describe('ThreadCommentPostgres', () => {
         id: 'reply-123',
         username: 'dicoding',
         date: expect.any(Date),
+        is_delete: false,
         content: 'this is a reply comment',
       });
       expect(replies[1]).toEqual({
         id: 'reply-124',
         username: 'dicoding',
         date: expect.any(Date),
-        content: '**balasan telah dihapus**',
+        is_delete: true,
+        content: 'this is a deleted reply comment',
       });
     });
 

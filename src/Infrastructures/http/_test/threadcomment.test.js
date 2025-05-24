@@ -489,7 +489,7 @@ describe('/threads/{threadId}/comments endpoint', () => {
       const responseJson = JSON.parse(response.payload);
       expect(response.statusCode).toEqual(403);
       expect(responseJson.status).toEqual('fail');
-      expect(responseJson.message).toEqual('Anda tidak berhak terhadap resource ini');
+      expect(responseJson.message).toEqual('Anda tidak berhak menghapus resource ini');
     });
 
     it('should response 404 when comment does not exist', async () => {
@@ -931,7 +931,7 @@ describe('/threads/{threadId}/comments endpoint', () => {
       const responseJson = JSON.parse(response.payload);
       expect(response.statusCode).toEqual(403);
       expect(responseJson.status).toEqual('fail');
-      expect(responseJson.message).toEqual('Anda tidak berhak terhadap resource ini');
+      expect(responseJson.message).toEqual('Anda tidak berhak menghapus balasan ini');
     });
 
 

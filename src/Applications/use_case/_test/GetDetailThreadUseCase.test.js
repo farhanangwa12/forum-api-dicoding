@@ -40,7 +40,9 @@ describe('GetDetailThreadUseCase', () => {
     const mockThreadRepository = new ThreadRepository();
     const mockThreadCommentRepository = new ThreadCommentRepository();
 
-    mockThreadRepository.checkThread = jest.fn().mockImplementation(() => Promise.resolve());
+    mockThreadRepository.checkThread = jest.fn().mockImplementation(() => Promise.resolve({
+      id: 'thread-123'
+    }));
     mockThreadRepository.detailThread = jest.fn().mockImplementation(() =>
       Promise.resolve({
         id: 'thread-123',
