@@ -19,7 +19,7 @@ class GetDetailThreadUseCase {
           id: reply.id,
           username: reply.username,
           date: reply.date,
-          content: reply.is_delete ? '**balasan sudah dihapus**' : reply.content,
+          content: reply.is_delete ? '**balasan telah dihapus**' : reply.content,
         }));
         return {
           id: comments.id,
