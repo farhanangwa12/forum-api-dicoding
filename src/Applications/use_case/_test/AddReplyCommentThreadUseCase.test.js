@@ -2,7 +2,7 @@ const AddReplyCommentThreadUseCase = require('../AddReplyCommentThreadUseCase');
 const CreateCommentThread = require('../../../Domains/thread_comment/entities/CreateCommentThread');
 const ThreadRepository = require('../../../Domains/thread/ThreadRepository');
 const ThreadCommentRepository = require('../../../Domains/thread_comment/ThreadCommentRepository');
-
+const CreatedCommentThread = require('../../../Domains/thread_comment/entities/CreatedCommentThread');
 
 
 describe('AddReplyCommentThreadUseCase', () => {
@@ -30,12 +30,12 @@ describe('AddReplyCommentThreadUseCase', () => {
       is_delete: false
 
     }));
-    mockThreadCommentRepository.addCommentThread = jest.fn().mockImplementation(() => Promise.resolve({
+    mockThreadCommentRepository.addCommentThread = jest.fn().mockImplementation(() => Promise.resolve(new CreatedCommentThread({
       id: 'comment-124',
       content: 'this is reply for comment',
       owner: 'user-123'
 
-    }));
+    })));
     mockThreadCommentRepository.addReplyCommentThread = jest.fn().mockImplementation(() => Promise.resolve({
       id: 'reply-123',
     }));

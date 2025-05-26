@@ -20,25 +20,32 @@ describe('DeleteReplyCommentThreadUseCase', () => {
 
 
     mockThreadRepository.checkThread = jest.fn().mockImplementation(() => {
-      Promise.resolve({
+      return Promise.resolve({
         id: 'thread-123'
       });
-
-    });
-    mockThreadCommentRepository.checkReplyComment = jest.fn().mockResolvedValue({
-      id: 'reply-123',
-      reference_comment_id: 'comment-124',
-      reply_comment_id: 'comment-123',
-    });
-    mockThreadCommentRepository.checkThreadComment = jest.fn().mockResolvedValue({
-      id: 'comment-124',
-      content: 'This is a comment',
-      owner: 'user-123',
-      is_delete: false,
     });
 
+    mockThreadCommentRepository.checkReplyComment = jest.fn().mockImplementation(() => {
+      return Promise.resolve({
+        id: 'reply-123',
+        reference_comment_id: 'comment-124',
+        reply_comment_id: 'comment-123',
+      });
+    });
 
-    mockThreadCommentRepository.deleteCommentThread = jest.fn().mockResolvedValue();
+    mockThreadCommentRepository.checkThreadComment = jest.fn().mockImplementation(() => {
+      return Promise.resolve({
+        id: 'comment-124',
+        content: 'This is a comment',
+        owner: 'user-123',
+        is_delete: false,
+      });
+    });
+
+    mockThreadCommentRepository.deleteCommentThread = jest.fn().mockImplementation(() => {
+      return Promise.resolve();
+    });
+
 
     const deleteReplyCommentThreadUseCase = new DeleteReplyCommentThreadUseCase({
       threadRepository: mockThreadRepository,
@@ -69,22 +76,28 @@ describe('DeleteReplyCommentThreadUseCase', () => {
 
 
     mockThreadRepository.checkThread = jest.fn().mockImplementation(() => {
-      Promise.resolve({
+      return Promise.resolve({
         id: 'thread-123'
       });
+    });
 
+    mockThreadCommentRepository.checkReplyComment = jest.fn().mockImplementation(() => {
+      return Promise.resolve({
+        id: 'reply-123',
+        reference_comment_id: 'comment-124',
+        reply_comment_id: 'comment-123',
+      });
     });
-    mockThreadCommentRepository.checkReplyComment = jest.fn().mockResolvedValue({
-      id: 'reply-123',
-      reference_comment_id: 'comment-124',
-      reply_comment_id: 'comment-123',
+
+    mockThreadCommentRepository.checkThreadComment = jest.fn().mockImplementation(() => {
+      return Promise.resolve({
+        id: 'comment-124',
+        content: 'This is a comment',
+        owner: 'user-123',
+        is_delete: false,
+      });
     });
-    mockThreadCommentRepository.checkThreadComment = jest.fn().mockResolvedValue({
-      id: 'comment-124',
-      content: 'This is a comment',
-      owner: 'user-123',
-      is_delete: false,
-    });
+
 
 
     mockThreadCommentRepository.deleteCommentThread = jest.fn().mockResolvedValue();

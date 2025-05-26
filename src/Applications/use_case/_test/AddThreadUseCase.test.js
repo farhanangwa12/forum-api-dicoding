@@ -9,17 +9,23 @@ describe('AddThreadUseCase', () => {
       title: 'A Thread Title',
       body: 'This is the thread body',
     };
+
     const expectedThread = {
       id: 'thread-123',
-      title: useCasePayload.title,
-      body: useCasePayload.body,
-      owner: userId,
+      title: 'A Thread title',
+      body: 'This is the thread body',
+      owner: 'user-123',
     };
 
     // Mock dependencies
     const mockThreadRepository = new ThreadRepository();
     mockThreadRepository.addThread = jest.fn().mockImplementation(() =>
-      Promise.resolve(expectedThread)
+      Promise.resolve({
+        id: 'thread-123',
+        title: 'A Thread title',
+        body: 'This is the thread body',
+        owner: 'user-123',
+      })
     );
 
     // Create use case instance
