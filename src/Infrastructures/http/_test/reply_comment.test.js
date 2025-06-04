@@ -4,8 +4,6 @@ const ThreadTableTestHelper = require('../../../../tests/ThreadTableTestHelper')
 const ThreadCommentTableTestHelper = require('../../../../tests/ThreadCommentTableTestHelper');
 const AuthenticationsTableTestHelper = require('../../../../tests/AuthenticationsTableTestHelper');
 const ReplyCommentTableTestHelper = require('../../../../tests/ReplyCommentTableTestHelper');
-
-
 const container = require('../../container');
 const createServer = require('../createServer');
 
@@ -302,7 +300,9 @@ describe('Reply Comment Section', () => {
             });
 
             // Assert
+        
             const responseJson = JSON.parse(response.payload);
+                
             expect(response.statusCode).toEqual(200);
             expect(responseJson.status).toEqual('success');
         });

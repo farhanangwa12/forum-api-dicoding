@@ -8,7 +8,7 @@ class DeleteCommentThreadUseCase {
   async execute(useCasePayload) {
     await this._threadRepository.checkThread(useCasePayload.threadId);
     const commentThread = await this._threadCommentRepository.checkThreadComment(useCasePayload.commentId);
-    if (commentThread.owner !== useCasePayload.userId) {
+    if (commentThread.owner !== useCasePayload.owner) {
       throw new Error('DELETE_COMMENT_THREAD.UNAUTHORIZED_USER_ACTION_ON_THREAD_COMMENT');
     }
     if (commentThread.is_delete) {

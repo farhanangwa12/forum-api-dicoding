@@ -1,3 +1,5 @@
+const DetailThreadComment = require('../../Domains/thread_comment/entities/DetailThreadComment');
+const DetailReplyComment = require('../../Domains/reply_comment/entities/DetailReplyComment');
 class GetDetailThreadUseCase {
   constructor({ threadRepository, threadCommentRepository, replyCommentRepository }) {
     this._threadRepository = threadRepository;
@@ -16,17 +18,11 @@ class GetDetailThreadUseCase {
       allComments.map(async (comments) => {
         const replies = await this._replyCommentRepository.getAllReplyByCommentId(comments.id);
         // Map replies untuk mengubah content berdasarkan is_delete
-        const filteredReplies = replies.map((reply) => ({
-          id: reply.id,
-          username: reply.username,
-          date: reply.date,
-          content: reply.is_delete ? '**balasan telah dihapus**' : reply.content,
-        }));
+        const filteredReplies = replies.map((reply) => (new DetailReplyComment(reply)));
+
+        const detailComment = new DetailThreadComment(comments);
         return {
-          id: comments.id,
-          username: comments.username,
-          date: comments.date,
-          content: comments.is_delete ? '**komentar telah dihapus**' : comments.content,
+          ...detailComment,
           replies: filteredReplies
         };
       })

@@ -4,6 +4,7 @@
 const NotFoundError = require('../../Commons/exceptions/NotFoundError');
 const ThreadRepository = require('../../Domains/thread/ThreadRepository');
 const CreatedThread = require('../../Domains/thread/entities/CreatedThread');
+const DetailThread = require('../../Domains/thread/entities/DetailThread');
 class ThreadRepositoryPostgres extends ThreadRepository {
   constructor(pool, idGenerator) {
     super();
@@ -42,7 +43,7 @@ class ThreadRepositoryPostgres extends ThreadRepository {
     };
     const result = await this._pool.query(query);
 
-    return result.rows[0];
+    return new DetailThread({...result.rows[0] });
   }
 
   async checkThread(threadId) {

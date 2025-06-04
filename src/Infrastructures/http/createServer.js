@@ -4,7 +4,7 @@ const DomainErrorTranslator = require('../../Commons/exceptions/DomainErrorTrans
 const users = require('../../Interfaces/http/api/users');
 const authentications = require('../../Interfaces/http/api/authentications');
 const thread = require('../../Interfaces/http/api/thread');
-const threadComment = require('../../Interfaces/http/api/threadcomment');
+const threadComment = require('../../Interfaces/http/api/thread_comment');
 const replyComment = require('../../Interfaces/http/api/reply_comment');
 
 const Jwt = require('@hapi/jwt');
@@ -92,7 +92,7 @@ const createServer = async (container) => {
       }
 
 
-      console.log(response);
+      // console.log(response);
       // penanganan server error sesuai kebutuhan
       const newResponse = h.response({
         status: 'error',

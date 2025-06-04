@@ -13,7 +13,7 @@ class DeleteReplyCommentThreadUseCase {
 
     const commentThread = await this._threadCommentRepository.checkThreadComment(dataReply.reference_comment_id);
 
-    if (commentThread.owner !== useCasePayload.userId) {
+    if (commentThread.owner !== useCasePayload.owner) {
       throw new Error('DELETE_REPLY_COMMENT_THREAD.UNAUTHORIZED_USER_ACTION_ON_REPLY_COMMENT_THREAD');
     }
 

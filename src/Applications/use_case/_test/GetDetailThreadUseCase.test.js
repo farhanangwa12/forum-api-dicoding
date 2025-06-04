@@ -2,30 +2,46 @@ const GetDetailThreadUseCase = require('../GetDetailThreadUseCase');
 const ThreadRepository = require('../../../Domains/thread/ThreadRepository');
 const ThreadCommentRepository = require('../../../Domains/thread_comment/ThreadCommentRepository');
 const ReplyCommentRepository = require('../../../Domains/reply_comment/ReplyCommentRepository');
+const DetailThread = require('../../../Domains/thread/entities/DetailThread');
+const DetailThreadComment = require('../../../Domains/thread_comment/entities/DetailThreadComment');
+const DetailReplyComment = require('../../../Domains/reply_comment/entities/DetailReplyComment');
 
 describe('GetDetailThreadUseCase', () => {
   it('should orchestrate the get detail thread action correctly', async () => {
     // Arrange
     const threadId = 'thread-123';
-    const expectedResult = {
+    const expectedThread = {
       id: 'thread-123',
       title: 'A Thread title',
       body: 'This is a thread title',
       date: '2023-10-01T12:00:00.000Z',
-      username: 'dicoding',
+      username: 'dicoding'
+    };
+
+    const expectedComment = new DetailThreadComment({
+      id: 'comment-123',
+      username: 'user123',
+      date: '2023-10-01T12:00:00.000Z',
+      content: 'This is a comment',
+      is_delete: false
+    });
+
+    const expectedReply = new DetailReplyComment({
+      id: 'reply-123',
+      username: 'user789',
+      date: '2023-10-01T12:03:00.000Z',
+      content: 'This is a reply',
+      is_delete: false
+    });
+
+    const expectedResult = {
+      ...expectedThread,
       comments: [
         {
-          id: 'comment-123',
-          username: 'user123',
-          date: '2023-10-01T12:00:00.000Z',
-          content: 'This is a comment',
+          ...expectedComment,
           replies: [
-            {
-              id: 'reply-123',
-              username: 'user789',
-              date: '2023-10-01T12:03:00.000Z',
-              content: 'This is a reply',
-            },
+            expectedReply
+
           ],
         },
       ],
@@ -39,13 +55,13 @@ describe('GetDetailThreadUseCase', () => {
       Promise.resolve({ id: 'thread-123' })
     );
     mockThreadRepository.detailThread = jest.fn().mockImplementation(() =>
-      Promise.resolve({
+      Promise.resolve(new DetailThread({
         id: 'thread-123',
         title: 'A Thread title',
         body: 'This is a thread title',
         date: '2023-10-01T12:00:00.000Z',
         username: 'dicoding',
-      })
+      }))
     );
     mockThreadCommentRepository.getAllCommentByThreadId = jest.fn().mockImplementation(() =>
       Promise.resolve([
@@ -55,18 +71,17 @@ describe('GetDetailThreadUseCase', () => {
           date: '2023-10-01T12:00:00.000Z',
           content: 'This is a comment',
           is_delete: false,
-        },
+        }
       ])
     );
     mockReplyCommentRepository.getAllReplyByCommentId = jest.fn().mockImplementation(() =>
-      Promise.resolve([
-        {
-          id: 'reply-123',
-          username: 'user789',
-          date: '2023-10-01T12:03:00.000Z',
-          content: 'This is a reply',
-          is_delete: false,
-        },
+      Promise.resolve([{
+        id: 'reply-123',
+        username: 'user789',
+        date: '2023-10-01T12:03:00.000Z',
+        content: 'This is a reply',
+        is_delete: false,
+      }
       ])
     );
 
@@ -80,11 +95,12 @@ describe('GetDetailThreadUseCase', () => {
     const result = await getDetailThreadUseCase.execute(threadId);
 
     // Assert
+    expect(result).toStrictEqual(expectedResult);
     expect(mockThreadRepository.checkThread).toHaveBeenCalledWith(threadId);
     expect(mockThreadRepository.detailThread).toHaveBeenCalledWith(threadId);
     expect(mockThreadCommentRepository.getAllCommentByThreadId).toHaveBeenCalledWith(threadId);
     expect(mockReplyCommentRepository.getAllReplyByCommentId).toHaveBeenCalledWith('comment-123');
-    expect(result).toStrictEqual(expectedResult);
+
   });
 
 
@@ -92,27 +108,63 @@ describe('GetDetailThreadUseCase', () => {
   it('should handle deleted comments correctly', async () => {
     // Arrange
     const threadId = 'thread-123';
-    const expectedResult = {
+
+    const expectedThread = {
       id: 'thread-123',
       title: 'A Thread title',
       body: 'This is a thread title',
       date: '2023-10-01T12:00:00.000Z',
-      username: 'dicoding',
+      username: 'dicoding'
+    };
+
+    const expectedComment = new DetailThreadComment({
+      id: 'comment-123',
+      username: 'user123',
+      date: '2023-10-01T12:00:00.000Z',
+      content: 'This is a comment',
+      is_delete: false,
+    });
+
+    const expectedDeletedComment = new DetailThreadComment({
+      id: 'comment-124',
+      username: 'user123',
+      date: '2023-10-01T12:00:00.000Z',
+      content: 'this comment is deleted',
+      is_delete: true,
+    });
+
+    const expectedReply = new DetailReplyComment({
+      id: 'reply-123',
+      username: 'user789',
+      date: '2023-10-01T12:03:00.000Z',
+      content: 'This is a reply',
+      is_delete: false,
+    });
+
+    const expectedReply2 = new DetailReplyComment({
+      id: 'reply-124',
+      username: 'user789',
+      date: '2023-10-01T12:03:00.000Z',
+      content: 'This is a reply from deleted comment',
+      is_delete: false,
+    });
+
+
+    const expectedResult = {
+      ...expectedThread,
       comments: [
         {
-          id: 'comment-123',
-          username: 'user123',
-          date: '2023-10-01T12:00:00.000Z',
-          content: 'This is a comment',
-          replies: [],
+          ...expectedComment,
+          replies: [
+            expectedReply
+          ],
         },
         {
-          id: 'comment-124',
-          username: 'user456',
-          date: '2023-10-01T12:01:00.000Z',
-          content: '**komentar telah dihapus**',
-          replies: [],
-        },
+          ...expectedDeletedComment,
+          replies: [
+            expectedReply2
+          ]
+        }
       ],
     };
 
@@ -124,13 +176,13 @@ describe('GetDetailThreadUseCase', () => {
       Promise.resolve({ id: 'thread-123' })
     );
     mockThreadRepository.detailThread = jest.fn().mockImplementation(() =>
-      Promise.resolve({
+      Promise.resolve(new DetailThread({
         id: 'thread-123',
         title: 'A Thread title',
         body: 'This is a thread title',
         date: '2023-10-01T12:00:00.000Z',
         username: 'dicoding',
-      })
+      }))
     );
     mockThreadCommentRepository.getAllCommentByThreadId = jest.fn().mockImplementation(() =>
       Promise.resolve([
@@ -143,15 +195,37 @@ describe('GetDetailThreadUseCase', () => {
         },
         {
           id: 'comment-124',
-          username: 'user456',
-          date: '2023-10-01T12:01:00.000Z',
-          content: 'This is a deleted comment',
+          username: 'user123',
+          date: '2023-10-01T12:00:00.000Z',
+          content: 'this comment is deleted',
           is_delete: true,
-        },
+        }
       ])
     );
-    mockReplyCommentRepository.getAllReplyByCommentId = jest.fn().mockImplementation(() =>
-      Promise.resolve([])
+    mockReplyCommentRepository.getAllReplyByCommentId = jest.fn().mockImplementation((commentId) => {
+      if (commentId === 'comment-123') {
+        return Promise.resolve([
+          {
+            id: 'reply-123',
+            username: 'user789',
+            date: '2023-10-01T12:03:00.000Z',
+            content: 'This is a reply',
+            is_delete: false,
+          }
+        ]);
+      }
+      if (commentId === 'comment-124') {
+        return Promise.resolve([
+          {
+            id: 'reply-124',
+            username: 'user789',
+            date: '2023-10-01T12:03:00.000Z',
+            content: 'This is a reply from deleted comment',
+            is_delete: false,
+          }
+        ]);
+      }
+    }
     );
 
     const getDetailThreadUseCase = new GetDetailThreadUseCase({
@@ -176,33 +250,63 @@ describe('GetDetailThreadUseCase', () => {
   it('should handle deleted replies correctly', async () => {
     // Arrange
     const threadId = 'thread-123';
-    const expectedResult = {
+    const expectedThread = new DetailThread({
       id: 'thread-123',
       title: 'A Thread title',
       body: 'This is a thread title',
       date: '2023-10-01T12:00:00.000Z',
-      username: 'dicoding',
+      username: 'dicoding'
+    });
+
+    const expectedComment = new DetailThreadComment({
+      id: 'comment-123',
+      username: 'user123',
+      date: '2023-10-01T12:00:00.000Z',
+      content: 'This is a comment',
+      is_delete: false
+    });
+
+    const expectedComment2 = new DetailThreadComment({
+      id: 'comment-124',
+      username: 'user123',
+      date: '2023-10-01T12:00:00.000Z',
+      content: 'This is comment no 2',
+      is_delete: false
+    });
+
+    const expectedReply = new DetailReplyComment({
+      id: 'reply-123',
+      username: 'user789',
+      date: '2023-10-01T12:03:00.000Z',
+      content: 'This is a reply',
+      is_delete: false
+    });
+
+    const expectedDeletedReply = new DetailReplyComment({
+      id: 'reply-124',
+      username: 'user789',
+      date: '2023-10-01T12:03:00.000Z',
+      content: 'This reply is deleted',
+      is_delete: true
+    });
+
+
+    const expectedResult = {
+      ...expectedThread,
       comments: [
         {
-          id: 'comment-123',
-          username: 'user123',
-          date: '2023-10-01T12:00:00.000Z',
-          content: 'This is a comment',
+          ...expectedComment,
           replies: [
-            {
-              id: 'reply-123',
-              username: 'user789',
-              date: '2023-10-01T12:03:00.000Z',
-              content: 'This is a reply',
-            },
-            {
-              id: 'reply-124',
-              username: 'user790',
-              date: '2023-10-01T12:04:00.000Z',
-              content: '**balasan telah dihapus**',
-            },
+
+            expectedReply
           ],
         },
+        {
+          ...expectedComment2,
+          replies: [
+            expectedDeletedReply
+          ]
+        }
       ],
     };
 
@@ -214,13 +318,13 @@ describe('GetDetailThreadUseCase', () => {
       Promise.resolve({ id: 'thread-123' })
     );
     mockThreadRepository.detailThread = jest.fn().mockImplementation(() =>
-      Promise.resolve({
+      Promise.resolve(new DetailThread({
         id: 'thread-123',
         title: 'A Thread title',
         body: 'This is a thread title',
         date: '2023-10-01T12:00:00.000Z',
         username: 'dicoding',
-      })
+      }))
     );
     mockThreadCommentRepository.getAllCommentByThreadId = jest.fn().mockImplementation(() =>
       Promise.resolve([
@@ -231,25 +335,39 @@ describe('GetDetailThreadUseCase', () => {
           content: 'This is a comment',
           is_delete: false,
         },
+        {
+          id: 'comment-124',
+          username: 'user123',
+          date: '2023-10-01T12:00:00.000Z',
+          content: 'This is comment no 2',
+          is_delete: false,
+        }
       ])
     );
-    mockReplyCommentRepository.getAllReplyByCommentId = jest.fn().mockImplementation(() =>
-      Promise.resolve([
-        {
-          id: 'reply-123',
-          username: 'user789',
-          date: '2023-10-01T12:03:00.000Z',
-          content: 'This is a reply',
-          is_delete: false,
-        },
-        {
-          id: 'reply-124',
-          username: 'user790',
-          date: '2023-10-01T12:04:00.000Z',
-          content: 'This is a deleted reply',
-          is_delete: true,
-        },
-      ])
+    mockReplyCommentRepository.getAllReplyByCommentId = jest.fn().mockImplementation((commentId) => {
+      if (commentId === 'comment-123') {
+        return Promise.resolve([
+          {
+            id: 'reply-123',
+            username: 'user789',
+            date: '2023-10-01T12:03:00.000Z',
+            content: 'This is a reply',
+            is_delete: false,
+          }
+        ]);
+      }
+      if (commentId === 'comment-124') {
+        return Promise.resolve([
+          {
+            id: 'reply-124',
+            username: 'user789',
+            date: '2023-10-01T12:03:00.000Z',
+            content: 'This reply is deleted',
+            is_delete: true,
+          }
+        ]);
+      }
+    }
     );
 
     const getDetailThreadUseCase = new GetDetailThreadUseCase({
@@ -266,6 +384,7 @@ describe('GetDetailThreadUseCase', () => {
     expect(mockThreadRepository.detailThread).toHaveBeenCalledWith(threadId);
     expect(mockThreadCommentRepository.getAllCommentByThreadId).toHaveBeenCalledWith(threadId);
     expect(mockReplyCommentRepository.getAllReplyByCommentId).toHaveBeenCalledWith('comment-123');
+    expect(mockReplyCommentRepository.getAllReplyByCommentId).toHaveBeenCalledWith('comment-124');
     expect(result).toStrictEqual(expectedResult);
   });
 });

@@ -18,10 +18,12 @@ describe('AddReplyCommentThreadUseCase', () => {
       owner: 'user-123'
 
     };
+
+
     const mockThreadRepository = new ThreadRepository();
     const mockThreadCommentRepository = new ThreadCommentRepository();
     const mockReplyCommentRepository = new ReplyCommentRepository();
-
+    const createdCommentThread = new CreateCommentThread(useCasePayload);
     mockThreadRepository.checkThread = jest.fn().mockImplementation(() => Promise.resolve({
       id: 'thread-123'
     }));
@@ -61,11 +63,7 @@ describe('AddReplyCommentThreadUseCase', () => {
     });
     expect(mockThreadRepository.checkThread).toBeCalledWith(useCasePayload.threadId);
     expect(mockThreadCommentRepository.checkThreadComment).toBeCalledWith(useCasePayload.commentId);
-    expect(mockThreadCommentRepository.addCommentThread).toBeCalledWith({
-      content: useCasePayload.content,
-      owner: useCasePayload.owner,
-      threadId: useCasePayload.threadId,
-    });
+    expect(mockThreadCommentRepository.addCommentThread).toBeCalledWith(createdCommentThread);
     expect(mockReplyCommentRepository.addReplyCommentThread).toBeCalledWith({
       replyCommentId: useCasePayload.commentId,
       referenceCommentId: 'comment-124', // ID dari addedComment
@@ -75,4 +73,93 @@ describe('AddReplyCommentThreadUseCase', () => {
 
 
   });
+
+  it('should throw NotFoundError when thread is not found', async () => {
+    // Arrange
+    const useCasePayload = {
+      threadId: 'thread-not-found',
+      commentId: 'comment-123',
+      content: 'this is reply for comment',
+      owner: 'user-123'
+    };
+
+    const mockThreadRepository = new ThreadRepository();
+    const mockThreadCommentRepository = new ThreadCommentRepository();
+    const mockReplyCommentRepository = new ReplyCommentRepository();
+
+    mockThreadRepository.checkThread = jest.fn().mockImplementation(() => Promise.reject(new Error('Thread tidak ditemukan')));
+    mockThreadCommentRepository.checkThreadComment = jest.fn().mockImplementation(() => Promise.resolve({
+      id: 'comment-123',
+      content: 'this is a coment',
+      owner: 'user-123',
+      is_delete: false
+
+    }));
+    mockThreadCommentRepository.addCommentThread = jest.fn().mockImplementation(() => Promise.resolve(new CreatedCommentThread({
+      id: 'comment-124',
+      content: 'this is reply for comment',
+      owner: 'user-123'
+
+    })));
+    mockReplyCommentRepository.addReplyCommentThread = jest.fn().mockImplementation(() => Promise.resolve({
+      id: 'reply-123',
+    }));
+    const addReplyCommentThreadUseCase = new AddReplyCommentThreadUseCase({
+      threadRepository: mockThreadRepository,
+      threadCommentRepository: mockThreadCommentRepository,
+      replyCommentRepository: mockReplyCommentRepository
+    });
+
+    // Action & Assert
+    await expect(addReplyCommentThreadUseCase.execute(useCasePayload))
+      .rejects
+      .toThrowError(new Error('Thread tidak ditemukan'));
+
+    expect(mockThreadRepository.checkThread).toBeCalledWith(useCasePayload.threadId);
+    expect(mockThreadCommentRepository.checkThreadComment).not.toHaveBeenCalled();
+    expect(mockThreadCommentRepository.addCommentThread).not.toHaveBeenCalled();
+    expect(mockReplyCommentRepository.addReplyCommentThread).not.toHaveBeenCalled();
+  });
+  it('should throw NotFoundError when comment is not found', async () => {
+    // Arrange
+    const useCasePayload = {
+      threadId: 'thread-123',
+      commentId: 'comment-not-found',
+      content: 'this is reply for comment',
+      owner: 'user-123'
+    };
+
+    const mockThreadRepository = new ThreadRepository();
+    const mockThreadCommentRepository = new ThreadCommentRepository();
+    const mockReplyCommentRepository = new ReplyCommentRepository();
+
+    mockThreadRepository.checkThread = jest.fn().mockImplementation(() => Promise.resolve({ id: 'thread-123' }));
+    mockThreadCommentRepository.checkThreadComment = jest.fn().mockImplementation(() => Promise.reject(Error('Komentar tidak ditemukan')));
+    mockThreadCommentRepository.addCommentThread = jest.fn().mockImplementation(() => Promise.resolve(new CreatedCommentThread({
+      id: 'comment-124',
+      content: 'this is reply for comment',
+      owner: 'user-123'
+
+    })));
+    mockReplyCommentRepository.addReplyCommentThread = jest.fn().mockImplementation(() => Promise.resolve({
+      id: 'reply-123',
+    }));
+
+    const addReplyCommentThreadUseCase = new AddReplyCommentThreadUseCase({
+      threadRepository: mockThreadRepository,
+      threadCommentRepository: mockThreadCommentRepository,
+      replyCommentRepository: mockReplyCommentRepository
+    });
+
+    // Action & Assert
+    await expect(addReplyCommentThreadUseCase.execute(useCasePayload))
+      .rejects
+      .toThrowError(new Error('Komentar tidak ditemukan'));
+
+    expect(mockThreadRepository.checkThread).toBeCalledWith(useCasePayload.threadId);
+    expect(mockThreadCommentRepository.checkThreadComment).toBeCalledWith(useCasePayload.commentId);
+    expect(mockThreadCommentRepository.addCommentThread).not.toHaveBeenCalled();
+    expect(mockReplyCommentRepository.addReplyCommentThread).not.toHaveBeenCalled();
+  });
+
 });

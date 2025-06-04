@@ -12,10 +12,10 @@ class ReplyCommentHandler {
 
     async addReplyCommentHandler(request, h) {
         const { threadId, commentId } = request.params;
-        const { id: userId } = request.auth.credentials;
+        const { id: owner } = request.auth.credentials;
 
         const addReplyCommentThreadUseCase = this._container.getInstance(AddReplyCommentThreadUseCase.name);
-        const addedReply = await addReplyCommentThreadUseCase.execute({ threadId, commentId, owner: userId, ...request.payload });
+        const addedReply = await addReplyCommentThreadUseCase.execute({ threadId, commentId, owner, ...request.payload });
 
         return h.response({
             status: 'success',
@@ -26,10 +26,10 @@ class ReplyCommentHandler {
     }
     async deleteReplyCommentHandler(request, h) {
         const { threadId, commentId, replyId } = request.params;
-        const { id: userId } = request.auth.credentials;
+        const { id: owner } = request.auth.credentials;
 
         const deleteReplyCommentThreadUseCase = this._container.getInstance(DeleteReplyCommentThreadUseCase.name);
-        await deleteReplyCommentThreadUseCase.execute({ threadId, commentId, replyId, userId });
+        await deleteReplyCommentThreadUseCase.execute({ threadId, commentId, replyId, owner });
 
         return h.response({
             status: 'success'

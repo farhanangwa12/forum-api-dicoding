@@ -11,7 +11,7 @@ describe('DeleteCommentThreadUseCase', () => {
     const useCasePayload = {
       threadId: 'thread-123',
       commentId: 'comment-123',
-      userId: 'user-123',
+      owner: 'user-123',
     };
 
 
@@ -55,7 +55,7 @@ describe('DeleteCommentThreadUseCase', () => {
     const useCasePayload = {
       threadId: 'thread-123',
       commentId: 'comment-123',
-      userId: 'user-123',
+      owner: 'user-123',
     };
 
 
@@ -79,12 +79,13 @@ describe('DeleteCommentThreadUseCase', () => {
       threadCommentRepository: mockThreadCommentRepository,
     });
     // Action & Assert
+    // Thread not found
     await expect(deleteCommentThreadUseCase.execute(useCasePayload)).rejects.toThrow('Thread tidak ditemukan');
     expect(mockThreadRepository.checkThread).toHaveBeenCalledWith(useCasePayload.threadId);
     expect(mockThreadCommentRepository.checkThreadComment).not.toHaveBeenCalled();
     expect(mockThreadCommentRepository.deleteCommentThread).not.toHaveBeenCalled();
 
-    // Mock comment not found (after thread exists)
+    // Comment not found
     mockThreadRepository.checkThread = jest.fn().mockImplementation(() => Promise.resolve({
       id: 'thread-123'
     }));
@@ -95,12 +96,11 @@ describe('DeleteCommentThreadUseCase', () => {
 
   it('should throw AuthorizationError when user is not the comment owner', async () => {
     // Arrange
-
     // The real owner is user-123 not user-456
     const useCasePayload = {
       threadId: 'thread-123',
       commentId: 'comment-123',
-      userId: 'user-456',
+      owner: 'user-456',
     };
     // Mock repositories
     const mockThreadRepository = new ThreadRepository();
@@ -141,7 +141,7 @@ describe('DeleteCommentThreadUseCase', () => {
     const useCasePayload = {
       threadId: 'thread-123',
       commentId: 'comment-123',
-      userId: 'user-123',
+      owner: 'user-123',
     };
     // Mock repositories
     const mockThreadRepository = new ThreadRepository();

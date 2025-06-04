@@ -13,15 +13,15 @@ class AddReplyCommentThreadUseCase {
 
   async execute(useCasePayload) {
 
+
+
+    await this._threadRepository.checkThread(useCasePayload.threadId);
     const createdCommentThread = new CreateCommentThread(useCasePayload);
-
-    await this._threadRepository.checkThread(createdCommentThread.threadId);
-
     await this._threadCommentRepository.checkThreadComment(useCasePayload.commentId);
-    const addedComment = await this._threadCommentRepository.addCommentThread({ content: createdCommentThread.content, owner: createdCommentThread.owner, threadId: useCasePayload.threadId });
-    const replyComment =  await this._replyCommentRepository.addReplyCommentThread({ replyCommentId: useCasePayload.commentId, referenceCommentId: addedComment.id });
+    const addedComment = await this._threadCommentRepository.addCommentThread(createdCommentThread);
+    const replyComment = await this._replyCommentRepository.addReplyCommentThread({ replyCommentId: useCasePayload.commentId, referenceCommentId: addedComment.id });
 
-    return { ...addedComment, id: replyComment.id, };
+    return { ...addedComment, id: replyComment.id };
 
 
 
