@@ -1,7 +1,8 @@
 class GetDetailThreadUseCase {
-  constructor({ threadRepository, threadCommentRepository }) {
+  constructor({ threadRepository, threadCommentRepository, replyCommentRepository }) {
     this._threadRepository = threadRepository;
     this._threadCommentRepository = threadCommentRepository;
+    this._replyCommentRepository = replyCommentRepository;
   }
 
   async execute(threadId) {
@@ -13,7 +14,7 @@ class GetDetailThreadUseCase {
 
     const commentWithReply = await Promise.all(
       allComments.map(async (comments) => {
-        const replies = await this._threadCommentRepository.getAllReplyByCommentId(comments.id);
+        const replies = await this._replyCommentRepository.getAllReplyByCommentId(comments.id);
         // Map replies untuk mengubah content berdasarkan is_delete
         const filteredReplies = replies.map((reply) => ({
           id: reply.id,

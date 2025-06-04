@@ -17,6 +17,8 @@ const ThreadRepository = require('../Domains/thread/ThreadRepository');
 const ThreadRepositoryPostgres = require('../Infrastructures/repository/ThreadRepositoryPostgres');
 const ThreadCommentRepository = require('../Domains/thread_comment/ThreadCommentRepository');
 const ThreadCommentRepositoryPostgres = require('../Infrastructures/repository/ThreadCommentRepositoryPostgres');
+const ReplyCommentRepository = require('../Domains/reply_comment/ReplyCommentRepository');
+const ReplyCommentRepositoryPostgres = require('./repository/ReplyCommentRepositoryPostgres');
 // use case
 const AddUserUseCase = require('../Applications/use_case/AddUserUseCase');
 const AuthenticationTokenManager = require('../Applications/security/AuthenticationTokenManager');
@@ -106,6 +108,21 @@ container.register([
       dependencies: [
         {
           concrete: pool,
+        },
+        {
+          concrete: nanoid
+        }
+      ]
+    }
+  },
+  {
+    key: ReplyCommentRepository.name,
+    Class: ReplyCommentRepositoryPostgres,
+    parameter: {
+      dependencies: [
+        {
+          concrete: pool,
+
         },
         {
           concrete: nanoid
@@ -252,6 +269,10 @@ container.register([
         {
           name: 'threadCommentRepository',
           internal: ThreadCommentRepository.name
+        },
+        {
+          name: 'replyCommentRepository',
+          internal: ReplyCommentRepository.name
         }
       ]
     }
@@ -269,6 +290,10 @@ container.register([
         {
           name: 'threadCommentRepository',
           internal: ThreadCommentRepository.name
+        },
+        {
+          name: 'replyCommentRepository',
+          internal: ReplyCommentRepository.name
         }
       ]
     }
@@ -287,6 +312,10 @@ container.register([
         {
           name: 'threadCommentRepository',
           internal: ThreadCommentRepository.name
+        },
+        {
+          name: 'replyCommentRepository',
+          internal: ReplyCommentRepository.name
         }
       ]
     }

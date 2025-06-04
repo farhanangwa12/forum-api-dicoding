@@ -1,6 +1,7 @@
 const ThreadCommentRepository = require('../../../Domains/thread_comment/ThreadCommentRepository');
 const ThreadRepository = require('../../../Domains/thread/ThreadRepository');
 const DeleteReplyCommentThreadUseCase = require('../DeleteReplyCommentThreadUseCase');
+const ReplyCommentRepository = require('../../../Domains/reply_comment/ReplyCommentRepository');
 
 describe('DeleteReplyCommentThreadUseCase', () => {
 
@@ -17,6 +18,7 @@ describe('DeleteReplyCommentThreadUseCase', () => {
 
     const mockThreadRepository = new ThreadRepository();
     const mockThreadCommentRepository = new ThreadCommentRepository();
+    const mockReplyCommentRepository = new ReplyCommentRepository();
 
 
     mockThreadRepository.checkThread = jest.fn().mockImplementation(() => {
@@ -25,7 +27,7 @@ describe('DeleteReplyCommentThreadUseCase', () => {
       });
     });
 
-    mockThreadCommentRepository.checkReplyComment = jest.fn().mockImplementation(() => {
+    mockReplyCommentRepository.checkReplyComment = jest.fn().mockImplementation(() => {
       return Promise.resolve({
         id: 'reply-123',
         reference_comment_id: 'comment-124',
@@ -50,6 +52,7 @@ describe('DeleteReplyCommentThreadUseCase', () => {
     const deleteReplyCommentThreadUseCase = new DeleteReplyCommentThreadUseCase({
       threadRepository: mockThreadRepository,
       threadCommentRepository: mockThreadCommentRepository,
+      replyCommentRepository: mockReplyCommentRepository
     });
 
     // Action
@@ -57,7 +60,7 @@ describe('DeleteReplyCommentThreadUseCase', () => {
 
     // Assert
     expect(mockThreadRepository.checkThread).toBeCalledWith(useCasePayload.threadId);
-    expect(mockThreadCommentRepository.checkReplyComment).toBeCalledWith(useCasePayload.replyId);
+    expect(mockReplyCommentRepository.checkReplyComment).toBeCalledWith(useCasePayload.replyId);
     expect(mockThreadCommentRepository.checkThreadComment).toBeCalledWith('comment-124');
     expect(mockThreadCommentRepository.deleteCommentThread).toBeCalledWith('comment-124');
   });
@@ -73,6 +76,7 @@ describe('DeleteReplyCommentThreadUseCase', () => {
     };
     const mockThreadRepository = new ThreadRepository();
     const mockThreadCommentRepository = new ThreadCommentRepository();
+    const mockReplyCommentRepository = new ReplyCommentRepository();
 
 
     mockThreadRepository.checkThread = jest.fn().mockImplementation(() => {
@@ -81,7 +85,7 @@ describe('DeleteReplyCommentThreadUseCase', () => {
       });
     });
 
-    mockThreadCommentRepository.checkReplyComment = jest.fn().mockImplementation(() => {
+    mockReplyCommentRepository.checkReplyComment = jest.fn().mockImplementation(() => {
       return Promise.resolve({
         id: 'reply-123',
         reference_comment_id: 'comment-124',
@@ -105,6 +109,7 @@ describe('DeleteReplyCommentThreadUseCase', () => {
     const deleteReplyCommentThreadUseCase = new DeleteReplyCommentThreadUseCase({
       threadRepository: mockThreadRepository,
       threadCommentRepository: mockThreadCommentRepository,
+      replyCommentRepository: mockReplyCommentRepository
     });
 
     // Action & Assert
@@ -113,7 +118,7 @@ describe('DeleteReplyCommentThreadUseCase', () => {
     ).rejects.toThrow('DELETE_REPLY_COMMENT_THREAD.UNAUTHORIZED_USER_ACTION_ON_REPLY_COMMENT_THREAD');
 
     expect(mockThreadRepository.checkThread).toBeCalledWith(useCasePayload.threadId);
-    expect(mockThreadCommentRepository.checkReplyComment).toBeCalledWith(useCasePayload.replyId);
+    expect(mockReplyCommentRepository.checkReplyComment).toBeCalledWith(useCasePayload.replyId);
     expect(mockThreadCommentRepository.checkThreadComment).toBeCalledWith('comment-124');
     expect(mockThreadCommentRepository.deleteCommentThread).not.toBeCalled();
   });
@@ -128,6 +133,7 @@ describe('DeleteReplyCommentThreadUseCase', () => {
     };
     const mockThreadRepository = new ThreadRepository();
     const mockThreadCommentRepository = new ThreadCommentRepository();
+    const mockReplyCommentRepository = new ReplyCommentRepository();
 
 
     mockThreadRepository.checkThread = jest.fn().mockImplementation(() => {
@@ -136,7 +142,7 @@ describe('DeleteReplyCommentThreadUseCase', () => {
       });
 
     });
-    mockThreadCommentRepository.checkReplyComment = jest.fn().mockResolvedValue({
+    mockReplyCommentRepository.checkReplyComment = jest.fn().mockResolvedValue({
       id: 'reply-123',
       reference_comment_id: 'comment-124',
       reply_comment_id: 'comment-123',
@@ -154,6 +160,7 @@ describe('DeleteReplyCommentThreadUseCase', () => {
     const deleteReplyCommentThreadUseCase = new DeleteReplyCommentThreadUseCase({
       threadRepository: mockThreadRepository,
       threadCommentRepository: mockThreadCommentRepository,
+      replyCommentRepository: mockReplyCommentRepository
     });
 
     // Action & Assert
@@ -162,7 +169,7 @@ describe('DeleteReplyCommentThreadUseCase', () => {
     ).rejects.toThrow('DELETE_REPLY_COMMENT_THREAD.REFERENCE_COMMENT_NOT_FOUND_OR_ALREADY_DELETED');
 
     expect(mockThreadRepository.checkThread).toBeCalledWith(useCasePayload.threadId);
-    expect(mockThreadCommentRepository.checkReplyComment).toBeCalledWith(useCasePayload.replyId);
+    expect(mockReplyCommentRepository.checkReplyComment).toBeCalledWith(useCasePayload.replyId);
     expect(mockThreadCommentRepository.checkThreadComment).toBeCalledWith('comment-124');
     expect(mockThreadCommentRepository.deleteCommentThread).not.toBeCalled();
 

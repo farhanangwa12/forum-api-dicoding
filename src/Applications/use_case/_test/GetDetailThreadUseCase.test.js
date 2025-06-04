@@ -1,6 +1,7 @@
 const GetDetailThreadUseCase = require('../GetDetailThreadUseCase');
 const ThreadRepository = require('../../../Domains/thread/ThreadRepository');
 const ThreadCommentRepository = require('../../../Domains/thread_comment/ThreadCommentRepository');
+const ReplyCommentRepository = require('../../../Domains/reply_comment/ReplyCommentRepository');
 
 describe('GetDetailThreadUseCase', () => {
   it('should orchestrate the get detail thread action correctly', async () => {
@@ -32,6 +33,7 @@ describe('GetDetailThreadUseCase', () => {
 
     const mockThreadRepository = new ThreadRepository();
     const mockThreadCommentRepository = new ThreadCommentRepository();
+    const mockReplyCommentRepository = new ReplyCommentRepository();
 
     mockThreadRepository.checkThread = jest.fn().mockImplementation(() =>
       Promise.resolve({ id: 'thread-123' })
@@ -56,7 +58,7 @@ describe('GetDetailThreadUseCase', () => {
         },
       ])
     );
-    mockThreadCommentRepository.getAllReplyByCommentId = jest.fn().mockImplementation(() =>
+    mockReplyCommentRepository.getAllReplyByCommentId = jest.fn().mockImplementation(() =>
       Promise.resolve([
         {
           id: 'reply-123',
@@ -71,6 +73,7 @@ describe('GetDetailThreadUseCase', () => {
     const getDetailThreadUseCase = new GetDetailThreadUseCase({
       threadRepository: mockThreadRepository,
       threadCommentRepository: mockThreadCommentRepository,
+      replyCommentRepository: mockReplyCommentRepository
     });
 
     // Action
@@ -80,7 +83,7 @@ describe('GetDetailThreadUseCase', () => {
     expect(mockThreadRepository.checkThread).toHaveBeenCalledWith(threadId);
     expect(mockThreadRepository.detailThread).toHaveBeenCalledWith(threadId);
     expect(mockThreadCommentRepository.getAllCommentByThreadId).toHaveBeenCalledWith(threadId);
-    expect(mockThreadCommentRepository.getAllReplyByCommentId).toHaveBeenCalledWith('comment-123');
+    expect(mockReplyCommentRepository.getAllReplyByCommentId).toHaveBeenCalledWith('comment-123');
     expect(result).toStrictEqual(expectedResult);
   });
 
@@ -115,6 +118,7 @@ describe('GetDetailThreadUseCase', () => {
 
     const mockThreadRepository = new ThreadRepository();
     const mockThreadCommentRepository = new ThreadCommentRepository();
+    const mockReplyCommentRepository = new ReplyCommentRepository();
 
     mockThreadRepository.checkThread = jest.fn().mockImplementation(() =>
       Promise.resolve({ id: 'thread-123' })
@@ -146,13 +150,14 @@ describe('GetDetailThreadUseCase', () => {
         },
       ])
     );
-    mockThreadCommentRepository.getAllReplyByCommentId = jest.fn().mockImplementation(() =>
+    mockReplyCommentRepository.getAllReplyByCommentId = jest.fn().mockImplementation(() =>
       Promise.resolve([])
     );
 
     const getDetailThreadUseCase = new GetDetailThreadUseCase({
       threadRepository: mockThreadRepository,
       threadCommentRepository: mockThreadCommentRepository,
+      replyCommentRepository: mockReplyCommentRepository
     });
 
     // Action
@@ -162,8 +167,8 @@ describe('GetDetailThreadUseCase', () => {
     expect(mockThreadRepository.checkThread).toHaveBeenCalledWith(threadId);
     expect(mockThreadRepository.detailThread).toHaveBeenCalledWith(threadId);
     expect(mockThreadCommentRepository.getAllCommentByThreadId).toHaveBeenCalledWith(threadId);
-    expect(mockThreadCommentRepository.getAllReplyByCommentId).toHaveBeenCalledWith('comment-123');
-    expect(mockThreadCommentRepository.getAllReplyByCommentId).toHaveBeenCalledWith('comment-124');
+    expect(mockReplyCommentRepository.getAllReplyByCommentId).toHaveBeenCalledWith('comment-123');
+    expect(mockReplyCommentRepository.getAllReplyByCommentId).toHaveBeenCalledWith('comment-124');
     expect(result).toStrictEqual(expectedResult);
   });
 
@@ -203,6 +208,7 @@ describe('GetDetailThreadUseCase', () => {
 
     const mockThreadRepository = new ThreadRepository();
     const mockThreadCommentRepository = new ThreadCommentRepository();
+    const mockReplyCommentRepository = new ReplyCommentRepository();
 
     mockThreadRepository.checkThread = jest.fn().mockImplementation(() =>
       Promise.resolve({ id: 'thread-123' })
@@ -227,7 +233,7 @@ describe('GetDetailThreadUseCase', () => {
         },
       ])
     );
-    mockThreadCommentRepository.getAllReplyByCommentId = jest.fn().mockImplementation(() =>
+    mockReplyCommentRepository.getAllReplyByCommentId = jest.fn().mockImplementation(() =>
       Promise.resolve([
         {
           id: 'reply-123',
@@ -249,6 +255,7 @@ describe('GetDetailThreadUseCase', () => {
     const getDetailThreadUseCase = new GetDetailThreadUseCase({
       threadRepository: mockThreadRepository,
       threadCommentRepository: mockThreadCommentRepository,
+      replyCommentRepository: mockReplyCommentRepository
     });
 
     // Action
@@ -258,7 +265,7 @@ describe('GetDetailThreadUseCase', () => {
     expect(mockThreadRepository.checkThread).toHaveBeenCalledWith(threadId);
     expect(mockThreadRepository.detailThread).toHaveBeenCalledWith(threadId);
     expect(mockThreadCommentRepository.getAllCommentByThreadId).toHaveBeenCalledWith(threadId);
-    expect(mockThreadCommentRepository.getAllReplyByCommentId).toHaveBeenCalledWith('comment-123');
+    expect(mockReplyCommentRepository.getAllReplyByCommentId).toHaveBeenCalledWith('comment-123');
     expect(result).toStrictEqual(expectedResult);
   });
 });
