@@ -58,7 +58,7 @@ jobs:
       - name: Run migrations (optional)
         run: |
           # Jalankan migrasi jika ada, sesuaikan perintahnya
-          npm run migrate
+          npm run migrate up
 
       - name: Run tests
         run: npm run test
