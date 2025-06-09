@@ -26,8 +26,8 @@ jobs:
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_SECRET_KEY }}
           script: |
-            cd /forum-api
+            cd ~/forum-api
             git fetch --all
             git checkout master
             git reset --hard origin/master
-            pm2 restart auth-api
+            pm2 restart forum-api
