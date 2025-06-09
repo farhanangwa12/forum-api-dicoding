@@ -25,11 +25,6 @@ jobs:
           --health-retries 5
 
     env:
-      PGHOST: localhost
-      PGUSER: developer
-      PGPASSWORD: supersecretpassword
-      PGDATABASE: forumapi
-      PGPORT: 5432
       PGHOST_TEST: localhost
       PGUSER_TEST: developer
       PGPASSWORD_TEST: supersecretpassword
@@ -57,7 +52,6 @@ jobs:
 
       - name: Run migrations (optional)
         run: |
-          # Jalankan migrasi jika ada, sesuaikan perintahnya
           npm run migrate up
 
       - name: Run tests
