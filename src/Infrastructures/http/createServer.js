@@ -17,13 +17,22 @@ const createServer = async (container) => {
   });
 
 
+
   // registrasi plugin eksternal
   await server.register([
     {
       plugin: Jwt,
     },
   ]);
-
+  server.route({
+    method: 'GET',
+    path: '/hello-world',
+    handler: () => {
+      return {
+        message: 'Hello test mantap world!!!!!!',
+      };
+    },
+  });
   // mendefinisikan strategy autentikasi jwt
   server.auth.strategy('forum_api_jwt', 'jwt', {
     keys: process.env.ACCESS_TOKEN_KEY,
