@@ -10,32 +10,30 @@ exports.shorthands = undefined;
  */
 exports.up = (pgm) => {
 
-    pgm.createTable('likes_comment', {
-        id: {
-            type: 'VARCHAR(50)',
-            primaryKey: true,
-        },
-        user_id: {
-            type: 'VARCHAR(50)',
-            notNull: true,
-            references: 'users(id)',
-            onDelete: 'cascade',
+  pgm.createTable('likes_comment', {
+    id: {
+      type: 'VARCHAR(50)',
+      primaryKey: true,
+    },
+    userId: {
+      type: 'VARCHAR(50)',
+      notNull: true,
+      references: 'users(id)',
+      onDelete: 'cascade',
 
-        },
-        comment_id: {
-            type: 'VARCHAR(50)',
-            notNull: true,
-            references: 'thread_comments(id)',
-            onDelete: 'cascade',
-        },
-        created_at: {
-            type: 'TIMESTAMP',
-            default: pgm.func('CURRENT_TIMESTAMP'),
-            notNull: true,
-        },
-    });
-
-    pgm.addConstraint('likes_comment', 'unique_user_thread_comment_like', 'UNIQUE(user_id, comment_id)');
+    },
+    commentId: {
+      type: 'VARCHAR(50)',
+      notNull: true,
+      references: 'thread_comments(id)',
+      onDelete: 'cascade',
+    },
+    createdAt: {
+      type: 'TIMESTAMP',
+      default: pgm.func('CURRENT_TIMESTAMP'),
+      notNull: true,
+    },
+  });
 };
 
 /**
@@ -45,5 +43,5 @@ exports.up = (pgm) => {
  */
 exports.down = (pgm) => {
 
-    pgm.dropTable('likes_comment');
+  pgm.dropTable('likes_comment');
 };

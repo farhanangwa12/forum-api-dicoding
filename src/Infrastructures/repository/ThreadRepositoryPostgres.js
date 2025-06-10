@@ -21,7 +21,7 @@ class ThreadRepositoryPostgres extends ThreadRepository {
     const id = `thread-${this._idGenerator()}`;
     const createdAt = new Date(Date.now());
     const query = {
-      text: 'INSERT INTO thread (id, title, body, owner, created_at, updated_at) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id, title, owner',
+      text: 'INSERT INTO thread (id, title, body, owner, "createdAt", "updatedAt") VALUES ($1, $2, $3, $4, $5, $6) RETURNING id, title, owner',
       values: [id, title, body, owner, createdAt, createdAt]
     };
 
@@ -34,7 +34,7 @@ class ThreadRepositoryPostgres extends ThreadRepository {
   async detailThread(threadId) {
     const query = {
       text: `
-                SELECT t.id, t.title, t.body, t.created_at AS date, u.username
+                SELECT t.id, t.title, t.body, t."createdAt" AS date, u.username
                 FROM thread t
                 LEFT JOIN users u ON u.id = t.owner
                 WHERE t.id = $1
@@ -43,7 +43,7 @@ class ThreadRepositoryPostgres extends ThreadRepository {
     };
     const result = await this._pool.query(query);
 
-    return new DetailThread({...result.rows[0] });
+    return new DetailThread({ ...result.rows[0] });
   }
 
   async checkThread(threadId) {

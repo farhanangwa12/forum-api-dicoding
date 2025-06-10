@@ -1,13 +1,13 @@
 const DetailReplyComment = require('../DetailReplyComment');
 
 describe('DetailReplyComment Entity', () => {
-  it('should create DetailReplyComment correctly when is_delete is false', () => {
+  it('should create DetailReplyComment correctly when isDelete is false', () => {
     const payload = {
       id: 'reply-123',
       username: 'replier',
       date: '2023-10-01T12:00:00Z',
       content: 'This is a reply',
-      is_delete: false,
+      isDelete: false,
     };
 
     const reply = new DetailReplyComment(payload);
@@ -18,13 +18,13 @@ describe('DetailReplyComment Entity', () => {
     expect(reply.content).toBe(payload.content);
   });
 
-  it('should mask content when is_delete is true', () => {
+  it('should mask content when isDelete is true', () => {
     const payload = {
       id: 'reply-123',
       username: 'replier',
       date: '2023-10-01T12:00:00Z',
       content: 'Sensitive reply',
-      is_delete: true,
+      isDelete: true,
     };
 
     const reply = new DetailReplyComment(payload);

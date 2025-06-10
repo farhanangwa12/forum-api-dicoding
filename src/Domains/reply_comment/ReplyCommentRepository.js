@@ -1,5 +1,5 @@
 class ReplyCommentRepository {
-    
+
   async addReplyCommentThread(comment) {
     throw new Error('REPLY_COMMENT.METHOD_NOT_IMPEMENTED');
   }

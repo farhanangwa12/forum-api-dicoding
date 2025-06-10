@@ -40,7 +40,7 @@ class ThreadCommentHandler {
     }).code(200);
   }
 
-  
+
 }
 
 module.exports = ThreadCommentHandler;

@@ -14,13 +14,13 @@ exports.up = (pgm) => {
       type: 'VARCHAR(50)',
       primaryKey: true
     },
-    reference_comment_id: {
+    referenceCommentId: {
       type: 'VARCHAR(50)',
       notNull: true,
       references: 'thread_comments(id)',
       onDelete: 'CASCADE'
     },
-    reply_comment_id: {
+    replyCommentId: {
       type: 'VARCHAR(50)',
       notNull: true,
       references: 'thread_comments(id)',

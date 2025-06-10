@@ -18,11 +18,11 @@ class GetDetailThreadUseCase {
     const commentWithReply = await Promise.all(
       allComments.map(async (comments) => {
         const replies = await this._replyCommentRepository.getAllReplyByCommentId(comments.id);
-        // Map replies untuk mengubah content berdasarkan is_delete
+        // Map replies untuk mengubah content berdasarkan isDelete
         const filteredReplies = replies.map((reply) => (new DetailReplyComment(reply)));
 
         const detailComment = new DetailThreadComment(comments);
-      
+
         const likeCount = await this._likeCommentRepository.getLikeCountByCommentId(comments.id);
         return {
           ...detailComment,

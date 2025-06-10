@@ -28,10 +28,10 @@ exports.up = (pgm) => {
       references: 'users(id)',
       onDelete: 'CASCADE'
     },
-    created_at: {
+    createdAt: {
       type: 'TIMESTAMP', notNull: false
     },
-    updated_at: {
+    updatedAt: {
       type: 'TIMESTAMP', notNull: false
     },
   });

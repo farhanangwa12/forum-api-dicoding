@@ -1,14 +1,14 @@
 const DetailThreadComment = require('../DetailThreadComment');
 
 describe('DetailThreadComment entity', () => {
-  it('should create DetailThreadComment object correctly when is_delete is false', () => {
+  it('should create DetailThreadComment object correctly when isDelete is false', () => {
     // Arrange
     const payload = {
       id: 'comment-123',
       username: 'user123',
       date: '2023-10-01T12:00:00Z',
       content: 'A comment',
-      is_delete: false,
+      isDelete: false,
     };
 
     // Act
@@ -21,13 +21,13 @@ describe('DetailThreadComment entity', () => {
     expect(detail.content).toBe(payload.content);
   });
 
-  it('should replace content with "**komentar telah dihapus**" when is_delete is true', () => {
+  it('should replace content with "**komentar telah dihapus**" when isDelete is true', () => {
     const payload = {
       id: 'comment-123',
       username: 'user123',
       date: '2023-10-01T12:00:00Z',
       content: 'This will be hidden',
-      is_delete: true,
+      isDelete: true,
     };
 
     const detail = new DetailThreadComment(payload);

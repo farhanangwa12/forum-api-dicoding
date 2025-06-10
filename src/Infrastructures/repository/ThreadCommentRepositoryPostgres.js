@@ -17,8 +17,13 @@ class ThreadCommentRepositoryPostgres extends ThreadCommentRepository {
     const createdAt = new Date(Date.now());
 
     const query = {
-      text: 'INSERT INTO thread_comments (id, content, owner, thread_id, created_at, updated_at, is_delete) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING id, content, owner',
-      values: [id, content, owner, threadId, createdAt, createdAt, 0]
+      text: `
+        INSERT INTO thread_comments
+        (id, content, owner, "threadId", "createdAt", "updatedAt", "isDelete")
+        VALUES ($1, $2, $3, $4, $5, $6, $7)
+        RETURNING id, content, owner
+      `,
+      values: [id, content, owner, threadId, createdAt, createdAt, 0],
     };
 
     const result = await this._pool.query(query);
@@ -33,8 +38,12 @@ class ThreadCommentRepositoryPostgres extends ThreadCommentRepository {
   async deleteCommentThread(commentId) {
     const updatedAt = new Date(Date.now());
     const query = {
-      text: 'UPDATE thread_comments SET is_delete = $1, updated_at = $2 WHERE id = $3',
-      values: [1, updatedAt, commentId]
+      text: `
+        UPDATE thread_comments
+        SET "isDelete" = $1, "updatedAt" = $2
+        WHERE id = $3
+      `,
+      values: [1, updatedAt, commentId],
     };
 
     await this._pool.query(query);
@@ -43,8 +52,12 @@ class ThreadCommentRepositoryPostgres extends ThreadCommentRepository {
 
   async checkThreadComment(commentId) {
     const query = {
-      text: 'SELECT id, content, owner, is_delete FROM thread_comments WHERE id = $1',
-      values: [commentId]
+      text: `
+        SELECT id, content, owner, "isDelete"
+        FROM thread_comments
+        WHERE id = $1
+      `,
+      values: [commentId],
     };
 
     const result = await this._pool.query(query);
@@ -60,14 +73,18 @@ class ThreadCommentRepositoryPostgres extends ThreadCommentRepository {
   async getAllCommentByThreadId(threadId) {
     const query = {
       text: `
-            SELECT tc.id, u.username AS username, tc.created_at AS date,
-            tc.content, tc.is_delete
-            FROM thread_comments tc
-            LEFT JOIN users u ON u.id = tc.owner
-            LEFT JOIN reply_comments ON reply_comments.reference_comment_id = tc.id
-            WHERE tc.thread_id = $1 AND reply_comments.reference_comment_id IS NULL
-            ORDER BY tc.created_at ASC
-        `,
+        SELECT
+          tc.id,
+          u.username AS username,
+          tc."createdAt" AS date,
+          tc.content,
+          tc."isDelete"
+        FROM thread_comments tc
+        LEFT JOIN users u ON u.id = tc.owner
+        LEFT JOIN reply_comments ON reply_comments."referenceCommentId" = tc.id
+        WHERE tc."threadId" = $1 AND reply_comments."referenceCommentId" IS NULL
+        ORDER BY tc."createdAt" ASC
+      `,
       values: [threadId],
     };
 

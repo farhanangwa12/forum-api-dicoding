@@ -31,7 +31,7 @@ describe('AddReplyCommentThreadUseCase', () => {
       id: 'comment-123',
       content: 'this is a coment',
       owner: 'user-123',
-      is_delete: false
+      isDelete: false
 
     }));
     mockThreadCommentRepository.addCommentThread = jest.fn().mockImplementation(() => Promise.resolve(new CreatedCommentThread({
@@ -92,7 +92,7 @@ describe('AddReplyCommentThreadUseCase', () => {
       id: 'comment-123',
       content: 'this is a coment',
       owner: 'user-123',
-      is_delete: false
+      isDelete: false
 
     }));
     mockThreadCommentRepository.addCommentThread = jest.fn().mockImplementation(() => Promise.resolve(new CreatedCommentThread({

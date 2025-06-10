@@ -7,12 +7,12 @@ const ThreadTableTestHelper = {
     title = 'Test Thread',
     body = 'This is a test thread body',
     owner = 'user-123',
-    created_at = new Date(),
-    updated_at = new Date()
+    createdAt = new Date(),
+    updatedAt = new Date()
   }) {
     const query = {
-      text: 'INSERT INTO thread (id, title, body, owner, created_at, updated_at) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id, title, owner',
-      values: [id, title, body, owner, created_at, updated_at]
+      text: 'INSERT INTO thread (id, title, body, owner, "createdAt", "updatedAt") VALUES ($1, $2, $3, $4, $5, $6) RETURNING id, title, owner',
+      values: [id, title, body, owner, createdAt, updatedAt]
     };
     const result = await pool.query(query);
     return result.rows[0]; // Return the inserted thread's id, title, owner
