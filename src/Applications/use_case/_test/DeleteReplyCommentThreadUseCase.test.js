@@ -30,8 +30,8 @@ describe('DeleteReplyCommentThreadUseCase', () => {
     mockReplyCommentRepository.checkReplyComment = jest.fn().mockImplementation(() => {
       return Promise.resolve({
         id: 'reply-123',
-        reference_comment_id: 'comment-124',
-        reply_comment_id: 'comment-123',
+        referenceCommentId: 'comment-124',
+        replyCommentId: 'comment-123',
       });
     });
 
@@ -40,7 +40,7 @@ describe('DeleteReplyCommentThreadUseCase', () => {
         id: 'comment-124',
         content: 'This is a comment',
         owner: 'user-123',
-        is_delete: false,
+        isDelete: false,
       });
     });
 
@@ -85,8 +85,8 @@ describe('DeleteReplyCommentThreadUseCase', () => {
     mockReplyCommentRepository.checkReplyComment = jest.fn().mockImplementation(() => {
       return Promise.resolve({
         id: 'reply-123',
-        reference_comment_id: 'comment-124',
-        reply_comment_id: 'comment-123',
+        referenceCommentId: 'comment-124',
+        replyCommentId: 'comment-123',
       });
     });
 
@@ -95,7 +95,7 @@ describe('DeleteReplyCommentThreadUseCase', () => {
         id: 'comment-124',
         content: 'This is a comment',
         owner: 'user-123',
-        is_delete: false,
+        isDelete: false,
       });
     });
 
@@ -144,7 +144,7 @@ describe('DeleteReplyCommentThreadUseCase', () => {
         id: 'comment-124',
         content: 'This is a comment',
         owner: 'user-123',
-        is_delete: false,
+        isDelete: false,
       });
     });
 
@@ -187,8 +187,8 @@ describe('DeleteReplyCommentThreadUseCase', () => {
     mockReplyCommentRepository.checkReplyComment = jest.fn().mockImplementation(() => {
       return Promise.resolve({
         id: 'reply-123',
-        reference_comment_id: 'comment-124',
-        reply_comment_id: 'comment-123',
+        referenceCommentId: 'comment-124',
+        replyCommentId: 'comment-123',
       });
     });
 
@@ -242,8 +242,8 @@ describe('DeleteReplyCommentThreadUseCase', () => {
     mockReplyCommentRepository.checkReplyComment = jest.fn().mockImplementation(() => {
       return Promise.resolve({
         id: 'reply-123',
-        reference_comment_id: 'comment-124',
-        reply_comment_id: 'comment-123',
+        referenceCommentId: 'comment-124',
+        replyCommentId: 'comment-123',
       });
     });
 
@@ -252,7 +252,7 @@ describe('DeleteReplyCommentThreadUseCase', () => {
         id: 'comment-124',
         content: 'This is a comment',
         owner: 'user-123',
-        is_delete: false,
+        isDelete: false,
       });
     });
 
@@ -298,14 +298,14 @@ describe('DeleteReplyCommentThreadUseCase', () => {
     });
     mockReplyCommentRepository.checkReplyComment = jest.fn().mockResolvedValue({
       id: 'reply-123',
-      reference_comment_id: 'comment-124',
-      reply_comment_id: 'comment-123',
+      referenceCommentId: 'comment-124',
+      replyCommentId: 'comment-123',
     });
     mockThreadCommentRepository.checkThreadComment = jest.fn().mockResolvedValue({
       id: 'comment-124',
       content: 'This is a comment',
       owner: 'user-123',
-      is_delete: true,
+      isDelete: true,
     });
 
 

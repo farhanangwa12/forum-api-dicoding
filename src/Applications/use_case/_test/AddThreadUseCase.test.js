@@ -11,15 +11,15 @@ describe('AddThreadUseCase', () => {
       body: 'This is the thread body',
     };
 
-    const createdThread = new CreateThread(useCasePayload); 
+    const createdThread = new CreateThread(useCasePayload);
 
-    
+
     const expectedThread = new CreatedThread({
       id: 'thread-123',
       title: useCasePayload.title,
       owner: userId
-      
-    })
+
+    });
 
     // Mock dependencies
     const mockThreadRepository = new ThreadRepository();
@@ -41,7 +41,7 @@ describe('AddThreadUseCase', () => {
 
     // Assert
     expect(result).toStrictEqual(expectedThread);
-    expect(mockThreadRepository.addThread).toBeCalledWith({...createdThread, owner: userId});
+    expect(mockThreadRepository.addThread).toBeCalledWith({ ...createdThread, owner: userId });
 
   });
 });

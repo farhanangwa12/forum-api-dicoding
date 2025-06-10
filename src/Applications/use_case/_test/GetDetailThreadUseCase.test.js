@@ -24,7 +24,7 @@ describe('GetDetailThreadUseCase', () => {
       username: 'user123',
       date: '2023-10-01T12:00:00.000Z',
       content: 'This is a comment',
-      is_delete: false
+      isDelete: false
     });
 
     const expectedReply = new DetailReplyComment({
@@ -32,7 +32,7 @@ describe('GetDetailThreadUseCase', () => {
       username: 'user789',
       date: '2023-10-01T12:03:00.000Z',
       content: 'This is a reply',
-      is_delete: false
+      isDelete: false
     });
 
     const expectedResult = {
@@ -74,7 +74,7 @@ describe('GetDetailThreadUseCase', () => {
           username: 'user123',
           date: '2023-10-01T12:00:00.000Z',
           content: 'This is a comment',
-          is_delete: false,
+          isDelete: false,
         }
       ])
     );
@@ -90,7 +90,7 @@ describe('GetDetailThreadUseCase', () => {
         username: 'user789',
         date: '2023-10-01T12:03:00.000Z',
         content: 'This is a reply',
-        is_delete: false,
+        isDelete: false,
       }
       ])
     );
@@ -134,7 +134,7 @@ describe('GetDetailThreadUseCase', () => {
       username: 'user123',
       date: '2023-10-01T12:00:00.000Z',
       content: 'This is a comment',
-      is_delete: false,
+      isDelete: false,
     });
 
     const expectedDeletedComment = new DetailThreadComment({
@@ -142,7 +142,7 @@ describe('GetDetailThreadUseCase', () => {
       username: 'user123',
       date: '2023-10-01T12:00:00.000Z',
       content: 'this comment is deleted',
-      is_delete: true,
+      isDelete: true,
     });
 
     const expectedReply = new DetailReplyComment({
@@ -150,7 +150,7 @@ describe('GetDetailThreadUseCase', () => {
       username: 'user789',
       date: '2023-10-01T12:03:00.000Z',
       content: 'This is a reply',
-      is_delete: false,
+      isDelete: false,
     });
 
     const expectedReply2 = new DetailReplyComment({
@@ -158,7 +158,7 @@ describe('GetDetailThreadUseCase', () => {
       username: 'user789',
       date: '2023-10-01T12:03:00.000Z',
       content: 'This is a reply from deleted comment',
-      is_delete: false,
+      isDelete: false,
     });
 
 
@@ -207,14 +207,14 @@ describe('GetDetailThreadUseCase', () => {
           username: 'user123',
           date: '2023-10-01T12:00:00.000Z',
           content: 'This is a comment',
-          is_delete: false,
+          isDelete: false,
         },
         {
           id: 'comment-124',
           username: 'user123',
           date: '2023-10-01T12:00:00.000Z',
           content: 'this comment is deleted',
-          is_delete: true,
+          isDelete: true,
         }
       ])
     );
@@ -231,7 +231,7 @@ describe('GetDetailThreadUseCase', () => {
             username: 'user789',
             date: '2023-10-01T12:03:00.000Z',
             content: 'This is a reply',
-            is_delete: false,
+            isDelete: false,
           }
         ]);
       }
@@ -242,7 +242,7 @@ describe('GetDetailThreadUseCase', () => {
             username: 'user789',
             date: '2023-10-01T12:03:00.000Z',
             content: 'This is a reply from deleted comment',
-            is_delete: false,
+            isDelete: false,
           }
         ]);
       }
@@ -287,7 +287,7 @@ describe('GetDetailThreadUseCase', () => {
       username: 'user123',
       date: '2023-10-01T12:00:00.000Z',
       content: 'This is a comment',
-      is_delete: false
+      isDelete: false
     });
 
     const expectedComment2 = new DetailThreadComment({
@@ -295,7 +295,7 @@ describe('GetDetailThreadUseCase', () => {
       username: 'user123',
       date: '2023-10-01T12:00:00.000Z',
       content: 'This is comment no 2',
-      is_delete: false
+      isDelete: false
     });
 
     const expectedReply = new DetailReplyComment({
@@ -303,7 +303,7 @@ describe('GetDetailThreadUseCase', () => {
       username: 'user789',
       date: '2023-10-01T12:03:00.000Z',
       content: 'This is a reply',
-      is_delete: false
+      isDelete: false
     });
 
     const expectedDeletedReply = new DetailReplyComment({
@@ -311,7 +311,7 @@ describe('GetDetailThreadUseCase', () => {
       username: 'user789',
       date: '2023-10-01T12:03:00.000Z',
       content: 'This reply is deleted',
-      is_delete: true
+      isDelete: true
     });
 
 
@@ -361,14 +361,14 @@ describe('GetDetailThreadUseCase', () => {
           username: 'user123',
           date: '2023-10-01T12:00:00.000Z',
           content: 'This is a comment',
-          is_delete: false,
+          isDelete: false,
         },
         {
           id: 'comment-124',
           username: 'user123',
           date: '2023-10-01T12:00:00.000Z',
           content: 'This is comment no 2',
-          is_delete: false,
+          isDelete: false,
         }
       ])
     );
@@ -386,7 +386,7 @@ describe('GetDetailThreadUseCase', () => {
             username: 'user789',
             date: '2023-10-01T12:03:00.000Z',
             content: 'This is a reply',
-            is_delete: false,
+            isDelete: false,
           }
         ]);
       }
@@ -397,7 +397,7 @@ describe('GetDetailThreadUseCase', () => {
             username: 'user789',
             date: '2023-10-01T12:03:00.000Z',
             content: 'This reply is deleted',
-            is_delete: true,
+            isDelete: true,
           }
         ]);
       }
@@ -408,7 +408,7 @@ describe('GetDetailThreadUseCase', () => {
       threadRepository: mockThreadRepository,
       threadCommentRepository: mockThreadCommentRepository,
       replyCommentRepository: mockReplyCommentRepository,
-         likeCommentRepository: mockLikeCommentRepository,
+      likeCommentRepository: mockLikeCommentRepository,
     });
 
     // Action

@@ -56,7 +56,7 @@ describe('ThreadRepositoryPostgres', () => {
         title: 'Test Thread',
         body: 'This is a test thread',
         owner: 'user-123',
-        created_at: new Date('2025-05-21T12:00:00Z'),
+        createdAt: new Date('2025-05-21T12:00:00Z'),
       });
       const threadRepository = new ThreadRepositoryPostgres(pool, {});
 

@@ -18,7 +18,7 @@ exports.up = (pgm) => {
       type: 'TEXT',
       notNull: true
     },
-    thread_id: {
+    threadId: {
       type: 'VARCHAR(50)',
       notNull: true,
       references: 'thread(id)',
@@ -32,13 +32,13 @@ exports.up = (pgm) => {
       onDelete: 'cascade'
     },
 
-    created_at: {
+    createdAt: {
       type: 'TIMESTAMP', notNull: false
     },
-    updated_at: {
+    updatedAt: {
       type: 'TIMESTAMP', notNull: false
     },
-    is_delete: {
+    isDelete: {
       type: 'BOOLEAN',
       defaultValue: false
     }

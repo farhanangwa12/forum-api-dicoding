@@ -2,12 +2,12 @@ class DetailThreadComment {
   constructor(payload) {
     this._validatePayload(payload);
 
-    const { id, username, date, content, is_delete } = payload;
+    const { id, username, date, content, isDelete } = payload;
 
     this.id = id;
     this.username = username;
     this.date = date;
-    this.content = is_delete ? '**komentar telah dihapus**' : content;
+    this.content = isDelete ? '**komentar telah dihapus**' : content;
   }
 
   _validatePayload({ id, username, date, content }) {

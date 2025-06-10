@@ -1,0 +1,8 @@
+url untuk mengakses api yaitu 
+https://farhannewproject.my.id
+
+
+url GitHub: https://github.com/farhanangwa12/forum-api-dicoding
+
+
+jika terjadi down pada aws, bisa hubungi melalui farhanangaprian@gmail.com

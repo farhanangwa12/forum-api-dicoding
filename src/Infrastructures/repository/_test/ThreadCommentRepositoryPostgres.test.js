@@ -67,13 +67,13 @@ describe('ThreadCommentPostgres', () => {
 
       // action
 
-      
+
       const threadComment = new ThreadCommentRepositoryPostgres(pool, {});
       await threadComment.deleteCommentThread('comment-123');
 
       // assert
       const threadCommentAfterUpdated = await ThreadCommentTableTestHelper.findThreadCommentById('comment-123');
-      expect(threadCommentAfterUpdated.is_delete).toBe(true);
+      expect(threadCommentAfterUpdated.isDelete).toBe(true);
 
 
     });
@@ -102,7 +102,7 @@ describe('ThreadCommentPostgres', () => {
         id: 'comment-123',
         content: 'this is a test comment',
         owner: 'user-123',
-        thread_id: 'thread-123',
+        threadId: 'thread-123',
       });
 
 
@@ -118,7 +118,7 @@ describe('ThreadCommentPostgres', () => {
       expect(comment.id).toBe('comment-123');
       expect(comment.content).toBe('this is a test comment');
       expect(comment.owner).toBe('user-123');
-      expect(comment.is_delete).toBe(false);
+      expect(comment.isDelete).toBe(false);
     });
 
 
@@ -136,15 +136,15 @@ describe('ThreadCommentPostgres', () => {
         id: 'comment-123',
         content: 'this is a test comment',
         owner: 'user-123',
-        thread_id: 'thread-123',
-        is_delete: 0,
+        threadId: 'thread-123',
+        isDelete: 0,
       });
       await ThreadCommentTableTestHelper.addThreadComment({
         id: 'comment-124',
         content: 'this is a deleted comment',
         owner: 'user-123',
-        thread_id: 'thread-123',
-        is_delete: 1,
+        threadId: 'thread-123',
+        isDelete: 1,
       });
       const threadCommentRepository = new ThreadCommentRepositoryPostgres(pool, () => 123);
       // Action
@@ -154,7 +154,7 @@ describe('ThreadCommentPostgres', () => {
       expect(comments[0]).toEqual({
         id: 'comment-123',
         date: expect.any(Date),
-        is_delete: false,
+        isDelete: false,
         username: 'dicoding',
         content: 'this is a test comment',
       });
@@ -162,7 +162,7 @@ describe('ThreadCommentPostgres', () => {
       expect(comments[1]).toEqual({
         id: 'comment-124',
         date: expect.any(Date),
-        is_delete: true,
+        isDelete: true,
         username: 'dicoding',
         content: 'this is a deleted comment',
       });
@@ -185,6 +185,6 @@ describe('ThreadCommentPostgres', () => {
 
 
 
-  
+
 
 });

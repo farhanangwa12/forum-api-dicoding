@@ -30,7 +30,7 @@ describe('DeleteCommentThreadUseCase', () => {
         id: 'comment-123',
         content: 'This is a comment',
         owner: 'user-123',
-        is_delete: false,
+        isDelete: false,
       })
     );
     mockThreadCommentRepository.deleteCommentThread = jest.fn().mockImplementation(() => Promise.resolve());
@@ -118,7 +118,7 @@ describe('DeleteCommentThreadUseCase', () => {
         id: 'comment-123',
         content: 'this is a comment',
         owner: 'user-123',
-        is_delete: false,
+        isDelete: false,
       })
     );
     mockThreadCommentRepository.deleteCommentThread = jest.fn().mockImplementation(() => Promise.resolve());
@@ -159,7 +159,7 @@ describe('DeleteCommentThreadUseCase', () => {
         id: 'comment-123',
         content: 'this is a comment',
         owner: 'user-123',
-        is_delete: true,
+        isDelete: true,
       })
     );
     mockThreadCommentRepository.deleteCommentThread = jest.fn().mockImplementation(() => Promise.resolve());
