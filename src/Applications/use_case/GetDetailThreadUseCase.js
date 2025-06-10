@@ -5,7 +5,7 @@ class GetDetailThreadUseCase {
     this._threadRepository = threadRepository;
     this._threadCommentRepository = threadCommentRepository;
     this._replyCommentRepository = replyCommentRepository;
-    this._likeCommentRpeository = likeCommentRepository;
+    this._likeCommentRepository = likeCommentRepository;
   }
 
   async execute(threadId) {
@@ -22,7 +22,8 @@ class GetDetailThreadUseCase {
         const filteredReplies = replies.map((reply) => (new DetailReplyComment(reply)));
 
         const detailComment = new DetailThreadComment(comments);
-        const likeCount = await this._likeCommentRpeository.getLikeCountByCommentId(comments.id);
+      
+        const likeCount = await this._likeCommentRepository.getLikeCountByCommentId(comments.id);
         return {
           ...detailComment,
           likeCount,
