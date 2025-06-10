@@ -1,2 +1,5 @@
 url untuk mengakses api yaitu 
 https://farhannewproject.my.id
+
+
+jika terjadi down pada aws, bisa hubungi melewati farhanangaprian@gmail.com
