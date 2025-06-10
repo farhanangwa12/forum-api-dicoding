@@ -17,6 +17,7 @@ const createServer = async (container) => {
   });
 
 
+
   // registrasi plugin eksternal
   await server.register([
     {
@@ -71,6 +72,16 @@ const createServer = async (container) => {
     }
 
   ]);
+
+  server.route({
+    method: 'GET',
+    path: '/hello-world',
+    handler: () => {
+      return {
+        message: 'Hello test mantap world!!!!!!',
+      };
+    },
+  });
 
   server.ext('onPreResponse', (request, h) => {
     // mendapatkan konteks response dari request
