@@ -30,4 +30,5 @@ jobs:
             git fetch --all
             git checkout master
             git reset --hard origin/master
+            npm run migrate up
             pm2 restart forum-api
