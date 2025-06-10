@@ -2,7 +2,6 @@ const ThreadCommentTableTestHelper = require('../../../../tests/ThreadCommentTab
 const ThreadTableTestHelper = require('../../../../tests/ThreadTableTestHelper');
 const UsersTableTestHelper = require('../../../../tests/UsersTableTestHelper');
 const ReplyCommentTableTestHelper = require('../../../../tests/ReplyCommentTableTestHelper');
-const ThreadCommentRepositoryPostgres = require('../ThreadCommentRepositoryPostgres');
 const NotFoundError = require('../../../Commons/exceptions/NotFoundError');
 const pool = require('../../database/postgres/pool');
 const ReplyCommentRepositoryPostgres = require('../ReplyCommentRepositoryPostgres');

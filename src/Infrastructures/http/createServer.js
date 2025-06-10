@@ -6,7 +6,7 @@ const authentications = require('../../Interfaces/http/api/authentications');
 const thread = require('../../Interfaces/http/api/thread');
 const threadComment = require('../../Interfaces/http/api/thread_comment');
 const replyComment = require('../../Interfaces/http/api/reply_comment');
-
+const likeComment = require('../../Interfaces/http/api/like_comment');
 const Jwt = require('@hapi/jwt');
 
 
@@ -64,6 +64,10 @@ const createServer = async (container) => {
     {
       plugin: replyComment,
       options: { container }
+    },
+    {
+      plugin: likeComment,
+      options: { container }
     }
 
   ]);
@@ -90,6 +94,7 @@ const createServer = async (container) => {
       if (!translatedError.isServer) {
         return h.continue;
       }
+      console.log(response);
 
 
       // console.log(response);

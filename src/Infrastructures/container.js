@@ -19,6 +19,8 @@ const ThreadCommentRepository = require('../Domains/thread_comment/ThreadComment
 const ThreadCommentRepositoryPostgres = require('../Infrastructures/repository/ThreadCommentRepositoryPostgres');
 const ReplyCommentRepository = require('../Domains/reply_comment/ReplyCommentRepository');
 const ReplyCommentRepositoryPostgres = require('./repository/ReplyCommentRepositoryPostgres');
+const LikeCommentRepository = require('../Domains/like_comment/LikeCommentRepository');
+const LikeCommentRepositoryPostgres = require('../Infrastructures/repository/LikeCommentRepositoryPostgres');
 // use case
 const AddUserUseCase = require('../Applications/use_case/AddUserUseCase');
 const AuthenticationTokenManager = require('../Applications/security/AuthenticationTokenManager');
@@ -34,6 +36,9 @@ const DeleteCommentThreadUseCase = require('../Applications/use_case/DeleteComme
 const GetDetailThreadUseCase = require('../Applications/use_case/GetDetailThreadUseCase');
 const AddReplyCommentThreadUseCase = require('../Applications/use_case/AddReplyCommentThreadUseCase');
 const DeleteReplyCommentThreadUseCase = require('../Applications/use_case/DeleteReplyCommentThreadUseCase');
+const DoLikeAndUnlikeCommentThreadUseCase = require('../Applications/use_case/DoLikeAndUnlikeCommentThreadUseCase');
+const { name } = require('../Interfaces/http/api/users');
+
 // creating container
 const container = createContainer();
 
@@ -123,6 +128,20 @@ container.register([
         {
           concrete: pool,
 
+        },
+        {
+          concrete: nanoid
+        }
+      ]
+    }
+  },
+  {
+    key: LikeCommentRepository.name,
+    Class: LikeCommentRepositoryPostgres,
+    parameter: {
+      dependencies: [
+        {
+          concrete: pool
         },
         {
           concrete: nanoid
@@ -273,6 +292,10 @@ container.register([
         {
           name: 'replyCommentRepository',
           internal: ReplyCommentRepository.name
+        },
+        {
+          name: 'likeCommentRepository',
+          internal: LikeCommentRepository.name
         }
       ]
     }
@@ -319,6 +342,28 @@ container.register([
         }
       ]
     }
+  },
+  {
+    key: DoLikeAndUnlikeCommentThreadUseCase.name,
+    Class: DoLikeAndUnlikeCommentThreadUseCase,
+    parameter: {
+      injectType: 'destructuring',
+      dependencies: [
+        {
+          name: 'threadRepository',
+          internal: ThreadRepository.name
+        },
+        {
+          name: 'threadCommentRepository',
+          internal: ThreadCommentRepository.name
+        },
+        {
+          name: 'likeCommentRepository',
+          internal: LikeCommentRepository.name
+        }
+      ]
+    }
+
   }
 ]);
 
