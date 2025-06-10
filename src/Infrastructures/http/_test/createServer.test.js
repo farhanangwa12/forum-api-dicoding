@@ -27,7 +27,7 @@ describe('HTTP server', () => {
 
     // Assert
     expect(response.statusCode).toEqual(200);
-    expect(response.message).toEqual('Hello world!!!!!!');
+    expect(response.message).toEqual('Hello test world!!!!!!');
 
 
   });
