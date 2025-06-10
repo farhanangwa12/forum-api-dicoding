@@ -25,11 +25,11 @@ jobs:
           --health-retries 5
 
     env:
-      PGHOST_TEST: localhost
-      PGUSER_TEST: developer
-      PGPASSWORD_TEST: supersecretpassword
-      PGDATABASE_TEST: forumapi_test
-      PGPORT_TEST: 5432
+      PGHOST: localhost
+      PGUSER: developer
+      PGPASSWORD: supersecretpassword
+      PGDATABASE: forumapi_test
+      PGPORT: 5432
 
     steps:
       - name: Checkout repository
