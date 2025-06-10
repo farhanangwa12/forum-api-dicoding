@@ -19,6 +19,7 @@ describe('HTTP server', () => {
   it('should showing hello world response,', async () => {
     // Arrange
     const server = await createServer({});
+
     // Action
     const response = await server.inject({
       method: 'GET',
@@ -27,7 +28,8 @@ describe('HTTP server', () => {
 
     // Assert
     expect(response.statusCode).toEqual(200);
-    expect(response.message).toEqual('Hello test mantap world!!!!!!');
+    const responseJson = JSON.parse(response.payload);
+    expect(responseJson.message).toEqual('Hello test mantap world!!!!!!');
 
 
   });
